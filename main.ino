@@ -3,8 +3,8 @@
 #include <WiFiClientSecure.h>
 #include <HTTPClient.h>
 
-const char* ssid = "Karmakar";
-const char* passwd = "paridhi9";
+const char* ssid = "Please add your WIFI SSID";
+const char* passwd = "Please add your WIFI PASSWORD";
 const char* url = "https://www.saucedemo.com/";
 const char* FileFormat = "/FileFormat.bin";
 
@@ -60,7 +60,7 @@ void writetoSPIFFS(const char* FileFormat, const char* url){
   int httpResponseCode = http.GET();
 
   size_t totalBytes = 0;
-  uint8_t buffer[4096]; // 4KB buffer
+  uint8_t buffer[4096]; // Using a fixed 4KB buffer
   
   unsigned long start = millis();
   if (httpResponseCode == 200) {
@@ -75,7 +75,7 @@ void writetoSPIFFS(const char* FileFormat, const char* url){
 
   WiFiClient* stream = http.getStreamPtr();
 
-  while (http.connected() && (contentLength == -1 || totalBytes < contentLength)) {
+  while (http.connected() && (contentLength == -1 || totalBytes < contentLength)) {  //To stop the possibility of infinite loop
     // Check for available data
     int available = stream->available();
     if (available > 0) {
@@ -133,10 +133,12 @@ void readfile(const char* FileFormat){
   else{
     Serial.println("File loaded");
   }
-  // Serial.println("File Content: ");
-  // while (r.available()){
+  
+  // Serial.println("File Content: ");  ////This section can be uncommented if we wish to read through entire file that is loaded
+  // while (r.available()){  
   //   Serial.write(r.read());
   // }
+  
   r.close();
   Serial.printf("total = %u used = %u \n", (unsigned)SPIFFS.totalBytes(), (unsigned)SPIFFS.usedBytes());  //Notice here printf is written
 }
